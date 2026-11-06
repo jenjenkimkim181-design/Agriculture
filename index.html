@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GrowQuest: From Seed to Harvest</title>
+
+<style>
+
+<style>
+:root {
+  --green: #2f6b3f;
+  --green-dark: #204c2d;
+  --green-light: #e7f3e5;
+  --cream: #fffaf0;
+  --yellow: #f3c969;
+  --text: #243629;
+  --muted: #68786b;
+  --white: #ffffff;
+  --border: #dce8d9;
+  --shadow: 0 12px 35px rgba(36, 72, 42, .09);
+}
+
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: var(--text);
+  background: #fbfcf7;
+  line-height: 1.6;
+}
+
+button, input, textarea, select { font: inherit; }
+button { cursor: pointer; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+
+a { color: inherit; text-decoration: none; }
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  min-height: 76px;
+  padding: 14px max(5%, calc((100% - 1240px) / 2));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  background: rgba(255, 255, 255, .96);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 900;
+  font-size: 1.35rem;
+  color: var(--green-dark);
+}
+
+.brand-mark { font-size: 2rem; }
+
+.nav {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+
+.nav a {
+  font-weight: 700;
+  font-size: .95rem;
+  color: #536657;
+  transition: color .2s;
+}
+
+.nav a:hover, .nav a:focus-visible { color: var(--green); }
+
+.menu-btn {
+  display: none;
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--green-dark);
+  padding: 9px 13px;
+  border-radius: 12px;
+  font-weight: 800;
+}
+
+.hero {
+  max-width: 1240px;
+  min-height: 470px;
+  margin: auto;
+  padding: 72px 5%;
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 45px;
+  align-items: center;
+}
+
+.eyebrow, .kicker {
+  display: inline-block;
+  color: var(--green);
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  padding: 8px 13px;
+  background: var(--green-light);
+  border-radius: 999px;
+}
+
+.hero h1 {
+  margin: 18px 0;
+  max-width: 650px;
+  font-size: clamp(2.7rem, 5vw, 4.7rem);
+  letter-spacing: -2.5px;
+  line-height: 1.08;
+}
+
+.hero h1 span { color: var(--green); }
+
+.hero-copy > p {
+  max-width: 570px;
+  color: var(--muted);
+  font-size: 1.08rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-weight: 800;
+  font-size: .93rem;
+  transition: transform .2s, box-shadow .2s, background .2s;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 16px rgba(30, 70, 35, .12);
+}
+
+.btn-primary { background: var(--green); color: white; }
+.btn-primary:hover:not(:disabled) { background: var(--green-dark); }
+.btn-secondary { background: var(--green-light); color: var(--green-dark); }
+
+.hero-art {
+  min-width: 0;
+}
+
+.garden-illustration {
+  position: relative;
+  min-height: 330px;
+  overflow: hidden;
+  border-radius: 35px;
+  background: linear-gradient(#dff2ff 0%, #f6f8d9 75%, #a5cc79 75%);
+  box-shadow: var(--shadow);
+}
+
+.sun {
+  position: absolute;
+  top: 30px;
+  right: 45px;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background: #ffdb69;
+  box-shadow: 0 0 0 12px rgba(255, 219, 105, .2);
+}
+
+.cloud {
+  position: absolute;
+  top: 55px;
+  left: 40px;
+  color: white;
+  font-size: 4.5rem;
+  text-shadow: 20px 5px 0 rgba(255,255,255,.55);
+}
+
+.ground {
+  position: absolute;
+  height: 78px;
+  bottom: 0;
+  width: 100%;
+  background: #79553b;
+  border-radius: 50% 50% 0 0 / 25% 25% 0 0;
+}
+
+.plant-emoji {
+  position: absolute;
+  bottom: 49px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 7.5rem;
+  animation: gentleSway 3s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.float-note {
+  position: absolute;
+  z-index: 2;
+  padding: 10px 14px;
+  background: white;
+  border-radius: 13px;
+  font-size: .85rem;
+  font-weight: 800;
+  box-shadow: var(--shadow);
+}
+
+.note-one { top: 130px; left: 18px; }
+.note-two { top: 195px; right: 15px; }
+
+main {
+  max-width: 1240px;
+  margin: auto;
+  padding: 20px 5% 70px;
+}
+
+section { margin-bottom: 76px; }
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 25px;
+  margin-bottom: 28px;
+}
+
+.section-head h2, .panel h2 {
+  margin: 7px 0 10px;
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+  line-height: 1.2;
+  letter-spacing: -.7px;
+}
+
+.section-head > p {
+  max-width: 460px;
+  margin: 0;
+  color: var(--muted);
+}
+
+.stages {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.stage-card {
+  padding: 21px 15px;
+  text-align: left;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: white;
+  transition: transform .2s, border .2s, box-shadow .2s;
+}
+
+.stage-card:hover { transform: translateY(-4px); }
+
+.stage-card.active {
+  border: 2px solid var(--green);
+  background: #f0f8ed;
+  box-shadow: var(--shadow);
+}
+
+.stage-icon {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 2.5rem;
+}
+
+.stage-card strong { display: block; }
+.stage-card small { display: block; margin-top: 5px; color: var(--muted); }
+
+.stage-detail {
+  margin-top: 20px;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: auto 1fr minmax(150px, .6fr);
+  align-items: center;
+  gap: 20px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+
+.detail-icon { font-size: 3rem; }
+.stage-detail h3 { margin: 0 0 5px; }
+.stage-detail p { margin: 0; color: var(--muted); }
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: .8rem;
+  font-weight: 800;
+}
+
+.progress-bar {
+  height: 10px;
+  overflow: hidden;
+  background: #e7eee3;
+  border-radius: 999px;
+}
+
+.progress-bar span {
+  display: block;
+  height: 100%;
+  background: var(--green);
+  border-radius: inherit;
+  transition: width .35s ease;
+}
+
+.activity-grid { display: block; }
+
+.panel {
+  min-width: 0;
+  padding: 26px;
+  border: 1px solid var(--border);
+  border-radius: 23px;
+  background: white;
+  box-shadow: var(--shadow);
+}
+
+.panel-intro { color: var(--muted); margin-top: 0; }
+
+.planting-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, .72fr) minmax(0, 1.5fr);
+  gap: 25px;
+  margin-top: 25px;
+}
+
+.planting-guide {
+  padding: 20px;
+  border-radius: 18px;
+  background: #f4f8ef;
+}
+
+.planting-guide h3 { margin-top: 0; }
+
+.guide-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px 0;
+  opacity: .65;
+}
+
+.guide-step.active { opacity: 1; }
+
+.guide-step > span {
+  flex: 0 0 30px;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: var(--green-dark);
+  background: #dcebd5;
+  font-weight: 900;
+}
+
+.guide-step.active > span {
+  background: var(--green);
+  color: white;
+}
+
+.guide-step strong, .guide-step small { display: block; }
+.guide-step small { margin-top: 4px; color: var(--muted); line-height: 1.4; }
+
+.garden-tip {
+  padding: 13px;
+  margin-top: 18px;
+  background: #fff3cf;
+  border-radius: 12px;
+  font-size: .88rem;
+}
+
+.planting-playground { min-width: 0; }
+.planting-playground h3 { margin-top: 0; }
+.tiny-help { color: var(--muted); font-size: .9rem; margin-top: -8px; }
+
+.plant-picker {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 9px;
+  margin: 18px 0 22px;
+}
+
+.plant-choice {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 5px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: white;
+  color: var(--text);
+  transition: .2s;
+}
+
+.plant-choice > span { font-size: 1.9rem; }
+.plant-choice strong { font-size: .82rem; }
+.plant-choice small { font-size: .72rem; color: var(--muted); }
+
+.plant-choice:hover { background: #f4f9f0; }
+
+.plant-choice.selected {
+  border: 2px solid var(--green);
+  background: var(--green-light);
+}
+
+.garden-scene {
+  position: relative;
+  min-height: 275px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: linear-gradient(#d9f0ff 0%, #f4f9d8 72%, #a4cb77 72%);
+}
+
+.scene-sun {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  font-size: 2rem;
+}
+
+.scene-cloud {
+  position: absolute;
+  top: 17px;
+  left: 22px;
+  font-size: 2.5rem;
+  color: white;
+}
+
+.scene-label {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 68%;
+  text-align: center;
+  font-size: .86rem;
+  font-weight: 900;
+}
+
+.soil-bed {
+  position: absolute;
+  bottom: 29px;
+  left: 8%;
+  width: 84%;
+  height: 100px;
+  border: 0;
+  border-radius: 50% 50% 18px 18px / 30% 30% 10px 10px;
+  background: linear-gradient(#8f6344, #65422e);
+  box-shadow: inset 0 10px 0 rgba(255,255,255,.07);
+}
+
+.soil-bed:focus-visible { outline: 3px solid #f3c969; outline-offset: 3px; }
+.soil-dots { position: absolute; top: 15px; left: 10%; color: #d7b28c; }
+.planted-seed { position: absolute; left: 50%; top: 27px; transform: translateX(-50%); font-size: 1.6rem; }
+.soil-caption { position: absolute; bottom: 12px; left: 0; width: 100%; color: #fff2d9; font-size: .78rem; font-weight: 800; }
+.growing-plant {
+  position: absolute;
+  z-index: 3;
+  bottom: 57px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 4.6rem;
+  line-height: 1;
+  filter: drop-shadow(0 3px 1px rgba(0,0,0,.08));
+  transform-origin: bottom center;
+  transition: font-size .35s, filter .3s;
+}
+
+.growing-plant.healthy { animation: bloomIn .55s ease-out; }
+.growing-plant.wilted { animation: wilt .65s ease-in-out forwards; }
+.growing-plant.thirsty { animation: thirsty .8s ease-in-out infinite alternate; }
+.growing-plant.flourishing { animation: bloomIn .6s ease-out, gentleSway 2.5s 0.6s ease-in-out infinite; }
+
+.water-splashes {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 48%;
+  transform: translate(-50%, -50%);
+  font-size: 1.6rem;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.water-splashes.show { animation: splash .8s ease-out; }
+
+.garden-ground-flowers {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 1.4rem;
+  pointer-events: none;
+}
+
+.watering-station {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: #fbfdf8;
+}
+
+.watering-copy {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+#waterStatus { color: var(--muted); font-size: .9rem; }
+
+.water-meter {
+  position: relative;
+  height: 34px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: linear-gradient(to right,
+    #f6d9d0 0%, #f6d9d0 30%,
+    #cce9ba 30%, #cce9ba 65%,
+    #f8e3ac 65%, #f8e3ac 100%);
+  border: 1px solid rgba(40,60,40,.1);
+}
+
+.water-meter > span {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  background: rgba(47,107,63,.45);
+  border-right: 3px solid var(--green-dark);
+  transition: width .1s linear;
+}
+
+.water-meter i {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: .67rem;
+  font-style: normal;
+  font-weight: 900;
+  color: #354436;
+  pointer-events: none;
+}
+
+.meter-low { left: 5%; }
+.meter-good { left: 36%; }
+.meter-high { right: 4%; }
+
+.sprinkler-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-top: 18px;
+}
+
+.sprinkler-instructions { color: var(--muted); font-size: .9rem; }
+
+.watering-can {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 92px;
+  min-height: 75px;
+  padding: 8px 14px;
+  border: 2px dashed #8bbd81;
+  border-radius: 16px;
+  background: #eaf6e6;
+  color: var(--green-dark);
+  font-size: 2rem;
+  touch-action: none;
+  user-select: none;
+}
+
+.watering-can span { font-size: .65rem; font-weight: 900; letter-spacing: .7px; }
+.watering-can.is-watering { background: #c9edbb; border-style: solid; transform: rotate(-8deg); }
+
+.water-feedback {
+  min-height: 25px;
+  margin: 14px 0;
+  color: var(--muted);
+  font-size: .9rem;
+}
+
+.activity-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+
+.diary-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.diary-form { display: grid; gap: 16px; }
+
+.field { display: grid; gap: 7px; }
+
+.field label { font-size: .9rem; font-weight: 800; }
+
+.field input, .field select, .field textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 12px 13px;
+  border: 1px solid #d6e2d3;
+  border-radius: 11px;
+  background: #fcfdf9;
+  color: var(--text);
+  outline: none;
+}
+
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(47,107,63,.1);
+}
+
+.field textarea { min-height: 115px; resize: vertical; }
+
+.diary-list { display: grid; gap: 12px; }
+
+.empty {
+  padding: 30px 15px;
+  border: 1px dashed #cdddc8;
+  border-radius: 15px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.diary-entry {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fbfdf8;
+}
+
+.diary-entry h3 { margin: 0 0 5px; font-size: 1rem; }
+.diary-entry p { margin: 8px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.diary-meta { font-size: .82rem; color: var(--muted); }
+
+.footer {
+  padding: 35px 5%;
+  text-align: center;
+  background: #204c2d;
+  color: white;
+  line-height: 1.9;
+}
+
+.toast {
+  position: fixed;
+  z-index: 200;
+  bottom: 24px;
+  left: 50%;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  padding: 13px 18px;
+  border-radius: 13px;
+  background: #243629;
+  color: white;
+  box-shadow: 0 8px 28px rgba(0,0,0,.2);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 15px);
+  transition: .25s;
+}
+
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+@keyframes gentleSway {
+  0%, 100% { rotate: -2deg; }
+  50% { rotate: 2deg; }
+}
+
+@keyframes bloomIn {
+  0% { opacity: .35; scale: .45; }
+  75% { scale: 1.12; }
+  100% { opacity: 1; scale: 1; }
+}
+
+@keyframes wilt {
+  0% { rotate: 0deg; }
+  100% { rotate: 28deg; filter: saturate(.45); }
+}
+
+@keyframes thirsty {
+  from { rotate: -7deg; filter: saturate(.7); }
+  to { rotate: 7deg; filter: saturate(.4); }
+}
+
+@keyframes splash {
+  0% { opacity: 0; scale: .5; }
+  35% { opacity: 1; scale: 1.3; }
+  100% { opacity: 0; scale: 1.8; }
+}
+
+@media (max-width: 900px) {
+  .hero { gap: 25px; }
+  .stages { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .planting-layout { grid-template-columns: 1fr; }
+  .planting-guide { order: 2; }
+  .planting-playground { order: 1; }
+}
+
+@media (max-width: 650px) {
+  .topbar { padding: 12px 5%; flex-wrap: wrap; }
+  .brand { font-size: 1.15rem; }
+  .brand-mark { font-size: 1.7rem; }
+  .menu-btn { display: block; }
+  .nav {
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    width: 100%;
+    padding: 5px 0;
+  }
+  .nav.open { display: flex; }
+  .nav a { padding: 12px 8px; border-top: 1px solid #edf1e9; }
+  .hero { grid-template-columns: 1fr; padding-top: 48px; }
+  .hero h1 { letter-spacing: -1.5px; }
+  .hero-art { max-width: 460px; width: 100%; margin: auto; }
+  .garden-illustration { min-height: 280px; }
+  .plant-emoji { font-size: 6rem; }
+  .section-head { align-items: flex-start; flex-direction: column; }
+  .stages { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stage-detail { grid-template-columns: auto 1fr; }
+  .progress-wrap { grid-column: 1 / -1; }
+  .panel { padding: 18px; }
+  .plant-picker { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .garden-scene { min-height: 255px; }
+  .diary-layout { grid-template-columns: 1fr; }
+  .sprinkler-row { align-items: flex-start; }
+  .sprinkler-instructions { max-width: 210px; }
+  main { padding-left: 4%; padding-right: 4%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
+</style>
+
+</style>
+</head>
+
+<body>
+<div id="app">
+<header class="topbar">
+  <a class="brand" href="#home" aria-label="GrowQuest home"><span class="brand-mark">🌱</span><span>GrowQuest</span></a>
+  <nav class="nav" id="nav">
+    <a href="#stages">Growth Stages</a>
+    <a href="#planting">Planting Lab</a>
+    <a href="#diary">My Diary</a>
+  </nav>
+  <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation" aria-expanded="false">☰ Menu</button>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-copy">
+    <span class="eyebrow">🌾 Agriculture learning adventure</span>
+    <h1>Grow something <span>amazing.</span></h1>
+    <p>From a tiny seed to a healthy harvest, discover how plants grow. Explore, experiment, and become a GrowQuest garden expert!</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="#stages">Start exploring ↗</a>
+      <a class="btn btn-secondary" href="#planting">Try the planting lab</a>
+    </div>
+  </div>
+  <div class="hero-art" aria-label="Illustration of a growing seedling">
+    <div class="garden-illustration">
+      <div class="sun"></div><div class="cloud">☁</div><div class="ground"></div><div class="plant-emoji">🌱</div>
+      <div class="float-note note-one">💧 Water wisely!</div>
+      <div class="float-note note-two">☀️ Let me grow!</div>
+    </div>
+  </div>
+</section>
+
+<main>
+<section id="stages">
+  <div class="section-head">
+    <div><div class="kicker">Your growing journey</div><h2>Every plant has a story</h2></div>
+    <p>Choose a stage to learn what happens as a plant grows. Follow the journey from seed selection to harvest.</p>
+  </div>
+  <div class="stages" id="stageCards"></div>
+  <div class="stage-detail" aria-live="polite">
+    <div class="detail-icon" id="detailIcon">🌰</div>
+    <div><h3 id="detailTitle">1. Seed Selection</h3><p id="detailText">A healthy crop begins with healthy seeds.</p></div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Growth journey</span><span id="stageCount">1 of 5</span></div>
+      <div class="progress-bar"><span id="stageProgress" style="width:20%"></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="activity-grid" id="planting">
+  <article class="panel planting-panel">
+    <div class="kicker">Hands-on activity 01</div>
+    <h2>My Little Garden 🌷</h2>
+    <p class="panel-intro">Choose a plant, tuck it into the soil, then drag the watering can over your garden. Watch your plant react as you water it!</p>
+
+    <div class="planting-layout">
+      <aside class="planting-guide" aria-label="Planting steps">
+        <h3>🌼 Your planting steps</h3>
+        <div class="guide-step active" data-guide="1"><span>1</span><div><strong>Choose a plant</strong><small>Pick a flower, vegetable, fruit, or herb below.</small></div></div>
+        <div class="guide-step" data-guide="2"><span>2</span><div><strong>Plant it in the soil</strong><small>Tap the soil to plant your chosen seed.</small></div></div>
+        <div class="guide-step" data-guide="3"><span>3</span><div><strong>Water gently</strong><small>Drag the watering can over your plant. Stop in the green zone.</small></div></div>
+        <div class="guide-step" data-guide="4"><span>4</span><div><strong>Watch it grow!</strong><small>Give it the right amount of water to see it flourish.</small></div></div>
+        <div class="garden-tip">💡 <strong>Gardener tip:</strong> Different plants need different amounts of water. Keep an eye on your plant's water meter!</div>
+      </aside>
+
+      <div class="planting-playground">
+        <h3>Pick your plant pal 💚</h3>
+        <p class="tiny-help">Choose one to see it in your garden.</p>
+
+        <div class="plant-picker" id="plantPicker" aria-label="Choose a plant">
+          <button class="plant-choice selected" data-plant="sunflower"><span>🌻</span><strong>Sunflower</strong><small>Flower</small></button>
+          <button class="plant-choice" data-plant="rose"><span>🌹</span><strong>Rose</strong><small>Flower</small></button>
+          <button class="plant-choice" data-plant="tulip"><span>🌷</span><strong>Tulip</strong><small>Flower</small></button>
+          <button class="plant-choice" data-plant="daisy"><span>🌼</span><strong>Daisy</strong><small>Flower</small></button>
+          <button class="plant-choice" data-plant="tomato"><span>🍅</span><strong>Tomato</strong><small>Vegetable</small></button>
+          <button class="plant-choice" data-plant="carrot"><span>🥕</span><strong>Carrot</strong><small>Vegetable</small></button>
+          <button class="plant-choice" data-plant="lettuce"><span>🥬</span><strong>Lettuce</strong><small>Vegetable</small></button>
+          <button class="plant-choice" data-plant="eggplant"><span>🍆</span><strong>Eggplant</strong><small>Vegetable</small></button>
+          <button class="plant-choice" data-plant="strawberry"><span>🍓</span><strong>Strawberry</strong><small>Fruit</small></button>
+          <button class="plant-choice" data-plant="watermelon"><span>🍉</span><strong>Watermelon</strong><small>Fruit</small></button>
+          <button class="plant-choice" data-plant="basil"><span>🌿</span><strong>Basil</strong><small>Herb</small></button>
+          <button class="plant-choice" data-plant="corn"><span>🌽</span><strong>Corn</strong><small>Crop</small></button>
+        </div>
+
+        <div class="garden-scene">
+          <div class="scene-sun">☀️</div><div class="scene-cloud">☁️</div>
+          <div class="scene-label" id="sceneLabel">Sunflower's little garden</div>
+          <button class="soil-bed" id="soilBed" aria-label="Tap to plant the selected seed">
+            <span class="soil-dots">·　· ·　· ·</span>
+            <span class="planted-seed" id="plantedSeed">🌰</span>
+            <span class="growing-plant" id="growingPlant" aria-label="Growing plant"></span>
+            <span class="soil-caption" id="soilCaption">Tap here to plant!</span>
+          </button>
+          <div class="water-splashes" id="waterSplashes" aria-hidden="true">💧 ✨ 💧</div>
+          <div class="garden-ground-flowers">🌱　🌼　🌱　🌿</div>
+        </div>
+
+        <div class="watering-station">
+          <div class="watering-copy"><strong>💦 Water meter</strong><span id="waterStatus" aria-live="polite">Plant your seed first!</span></div>
+          <div class="water-meter" role="progressbar" aria-label="Water level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="waterMeter">
+            <span id="waterFill"></span><i class="meter-low">Too little</i><i class="meter-good">Just right ✓</i><i class="meter-high">Too much</i>
+          </div>
+          <div class="sprinkler-row">
+            <div class="sprinkler-instructions">⬇️ Hold and drag over the plant to water</div>
+            <button class="watering-can" id="wateringCan" aria-label="Hold and drag the watering can over your plant" title="Hold and drag over your plant">🚿<span>DRAG ME</span></button>
+          </div>
+          <p class="water-feedback" id="waterFeedback" aria-live="polite">When the meter enters the green zone, let go to stop watering.</p>
+          <div class="activity-actions">
+            <button class="btn btn-primary" id="resetGarden">🌱 Start again</button>
+            <button class="btn btn-secondary" id="harvestPlant" disabled>✨ Finish planting</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+ 
+</section>
+
+<section class="diary" id="diary">
+  <div class="section-head">
+    <div><div class="kicker">Your garden journal</div><h2>My Growing Diary 📔</h2></div>
+    <p>Plant a seed at home and Record what you observe as your plant grows. Add an entry after watering, measuring, or noticing a change.</p>
+  </div>
+  <div class="diary-layout">
+    <article class="panel">
+      <h2>Log today's progress</h2>
+      <p class="panel-intro">Your entries stay in this browser on this device.</p>
+      <form class="diary-form" id="diaryForm">
+        <div class="field"><label for="entryDate">Date</label><input type="date" id="entryDate" required></div>
+        <div class="field"><label for="plantStage">Plant stage</label><select id="plantStage"><option>Seed selection</option><option>Germination</option><option>Seedling</option><option>Vegetative growth</option><option>Flowering / Fruiting</option><option>Harvest</option></select></div>
+        <div class="field"><label for="plantHeight">Plant height (optional)</label><input id="plantHeight" type="text" placeholder="e.g., 5 cm"></div>
+        <div class="field"><label for="entryNotes">What did you notice?</label><textarea id="entryNotes" placeholder="Leaves, height, soil moisture, weather..." required></textarea></div>
+        <button class="btn btn-primary" type="submit">＋ Save diary entry</button>
+      </form>
+    </article>
+    <article class="panel">
+      <h2>My observations</h2>
+      <p class="panel-intro">Look for patterns over time. Small changes can tell you a lot about plant health.</p>
+      <div class="diary-list" id="diaryList"><div class="empty">🌱 Your growing diary is waiting.<br>Save your first observation to begin!</div></div>
+      <div class="activity-actions"><button class="btn btn-secondary" id="exportDiary">Export diary (.txt)</button><button class="btn btn-secondary" id="clearDiary">Clear diary</button></div>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <strong>GrowQuest: From Seed to Harvest</strong><br>
+  Learn by growing. Grow by learning. 🌱<br>
+  <span style="opacity:.75">An interactive learning resource on plant propagation and crop production.</span>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const $ = id => document.getElementById(id);
+
+  // ----------------------------------------
+  // NOTIFICATIONS
+  // ----------------------------------------
+  let toastTimer;
+
+  function showToast(message) {
+    const toast = $("toast");
+    if (!toast) return;
+
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 2800);
+  }
+
+  // ----------------------------------------
+  // MOBILE NAVIGATION
+  // ----------------------------------------
+  const menuBtn = $("menuBtn");
+  const nav = $("nav");
+
+  menuBtn?.addEventListener("click", () => {
+    const isOpen = nav.classList.toggle("open");
+    menuBtn.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  nav?.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => {
+      nav.classList.remove("open");
+      menuBtn?.setAttribute("aria-expanded", "false");
+    });
+  });
+
+  // ----------------------------------------
+  // GROWTH STAGES
+  // ----------------------------------------
+  const stages = [
+    {
+      title: "Seed Selection",
+      icon: "🌰",
+      short: "Choose healthy seeds.",
+      text: "A healthy crop begins with healthy seeds. Choose seeds that are suitable for your climate, soil, and growing space."
+    },
+    {
+      title: "Germination",
+      icon: "🌱",
+      short: "The seed awakens.",
+      text: "With suitable moisture, warmth, and oxygen, a seed begins to germinate. The root usually emerges first, followed by the shoot."
+    },
+    {
+      title: "Seedling",
+      icon: "🌿",
+      short: "Leaves begin to grow.",
+      text: "The young seedling develops roots, a stem, and its first leaves. Protect it and provide suitable light and moisture."
+    },
+    {
+      title: "Vegetative Growth",
+      icon: "🪴",
+      short: "The plant grows stronger.",
+      text: "The plant develops more leaves, roots, and stems. Water, sunlight, nutrients, and enough growing space support healthy development."
+    },
+    {
+      title: "Flowering / Harvest",
+      icon: "🌻",
+      short: "Flowers, fruits, or crops appear.",
+      text: "Mature plants may produce flowers, fruits, or harvestable parts. Harvest at the appropriate stage for the crop."
+    }
+  ];
+
+  const stageCards = $("stageCards");
+
+  function renderStages() {
+    if (!stageCards) return;
+
+    stageCards.innerHTML = stages.map((stage, index) => `
+      <button type="button"
+        class="stage-card ${index === 0 ? "active" : ""}"
+        data-stage="${index}"
+        aria-pressed="${index === 0}">
+        <span class="stage-icon">${stage.icon}</span>
+        <strong>${index + 1}. ${stage.title}</strong>
+        <small>${stage.short}</small>
+      </button>
+    `).join("");
+
+    stageCards.querySelectorAll(".stage-card").forEach(card => {
+      card.addEventListener("click", () => {
+        updateStage(Number(card.dataset.stage));
+      });
+    });
+  }
+
+  function updateStage(index) {
+    const stage = stages[index];
+    if (!stage) return;
+
+    stageCards?.querySelectorAll(".stage-card").forEach(card => {
+      const active = Number(card.dataset.stage) === index;
+      card.classList.toggle("active", active);
+      card.setAttribute("aria-pressed", String(active));
+    });
+
+    $("detailIcon").textContent = stage.icon;
+    $("detailTitle").textContent = `${index + 1}. ${stage.title}`;
+    $("detailText").textContent = stage.text;
+    $("stageCount").textContent = `${index + 1} of ${stages.length}`;
+    $("stageProgress").style.width = `${((index + 1) / stages.length) * 100}%`;
+  }
+
+  renderStages();
+
+  // ----------------------------------------
+  // PLANTING LAB
+  // ----------------------------------------
+  const plantData = {
+    sunflower: { name: "Sunflower", seed: "🌰", sprout: "🌱", healthy: "🌻", thirsty: "🥀", wilted: "🥀", fruit: "🌻" },
+    rose:      { name: "Rose", seed: "🌰", sprout: "🌱", healthy: "🌹", thirsty: "🥀", wilted: "🥀", fruit: "🌹" },
+    tulip:     { name: "Tulip", seed: "🌰", sprout: "🌱", healthy: "🌷", thirsty: "🥀", wilted: "🥀", fruit: "🌷" },
+    daisy:     { name: "Daisy", seed: "🌰", sprout: "🌱", healthy: "🌼", thirsty: "🥀", wilted: "🥀", fruit: "🌼" },
+    tomato:    { name: "Tomato", seed: "🌰", sprout: "🌱", healthy: "🍅", thirsty: "🥀", wilted: "🥀", fruit: "🍅" },
+    carrot:    { name: "Carrot", seed: "🌰", sprout: "🌱", healthy: "🥕", thirsty: "🥀", wilted: "🥀", fruit: "🥕" },
+    lettuce:   { name: "Lettuce", seed: "🌰", sprout: "🌱", healthy: "🥬", thirsty: "🥀", wilted: "🥀", fruit: "🥬" },
+    eggplant:  { name: "Eggplant", seed: "🌰", sprout: "🌱", healthy: "🍆", thirsty: "🥀", wilted: "🥀", fruit: "🍆" },
+    strawberry:{ name: "Strawberry", seed: "🌰", sprout: "🌱", healthy: "🍓", thirsty: "🥀", wilted: "🥀", fruit: "🍓" },
+    watermelon:{ name: "Watermelon", seed: "🌰", sprout: "🌱", healthy: "🍉", thirsty: "🥀", wilted: "🥀", fruit: "🍉" },
+    basil:     { name: "Basil", seed: "🌰", sprout: "🌱", healthy: "🌿", thirsty: "🥀", wilted: "🥀", fruit: "🌿" },
+    corn:      { name: "Corn", seed: "🌰", sprout: "🌱", healthy: "🌽", thirsty: "🥀", wilted: "🥀", fruit: "🌽" }
+  };
+
+  let selectedPlant = "sunflower";
+  let planted = false;
+  let waterLevel = 0;
+  let plantCondition = "seed";
+  let isWatering = false;
+  let waterTimer = null;
+  let lastWaterTime = 0;
+  let waterStartLevel = 0;
+  let lastConditionMessage = "";
+
+  const picker = $("plantPicker");
+  const soilBed = $("soilBed");
+  const plantedSeed = $("plantedSeed");
+  const growingPlant = $("growingPlant");
+  const waterFill = $("waterFill");
+  const waterMeter = $("waterMeter");
+  const wateringCan = $("wateringCan");
+  const harvestButton = $("harvestPlant");
+
+  function setPlantVisual(emoji, condition = "") {
+    growingPlant.textContent = emoji;
+    growingPlant.className = "growing-plant";
+
+    if (condition) growingPlant.classList.add(condition);
+
+    // Keep the plant visible even when it wilts.
+    growingPlant.style.display = emoji ? "block" : "none";
+  }
+
+  function updateGuides(step) {
+    document.querySelectorAll(".guide-step").forEach(el => {
+      el.classList.toggle("active", Number(el.dataset.guide) === step);
+    });
+  }
+
+  function updateWaterMeter() {
+    const safeLevel = Math.max(0, Math.min(100, waterLevel));
+    waterFill.style.width = `${safeLevel}%`;
+    waterMeter.setAttribute("aria-valuenow", String(Math.round(safeLevel)));
+  }
+
+  function setWaterStatus(message) {
+    $("waterStatus").textContent = message;
+  }
+
+  function setWaterFeedback(message) {
+    $("waterFeedback").textContent = message;
+  }
+
+  function updatePlantCondition(condition) {
+    const plant = plantData[selectedPlant];
+    plantCondition = condition;
+
+    growingPlant.className = "growing-plant";
+    growingPlant.style.display = "block";
+
+    if (condition === "seed") {
+      setPlantVisual(plant.seed);
+      setWaterStatus("Plant your seed first!");
+      setWaterFeedback("Tap the soil to plant your selected seed.");
+      harvestButton.disabled = true;
+      updateGuides(2);
+      return;
+    }
+
+    if (condition === "sprout") {
+      setPlantVisual(plant.sprout);
+      setWaterStatus("Your seed has been planted 🌱");
+      setWaterFeedback("Water gently and watch your plant grow.");
+      harvestButton.disabled = true;
+      updateGuides(3);
+      return;
+    }
+
+    if (condition === "thirsty") {
+      setPlantVisual(plant.thirsty, "thirsty");
+      setWaterStatus("Too little water — your plant is thirsty!");
+      setWaterFeedback("Give your plant a little more water. Watch the meter.");
+      harvestButton.disabled = true;
+      updateGuides(3);
+      return;
+    }
+
+    if (condition === "wilted") {
+      setPlantVisual(plant.wilted, "wilted");
+      setWaterStatus("Overwatered — your plant is wilting!");
+      setWaterFeedback("Too much water can harm roots. Start again to try another watering.");
+      harvestButton.disabled = true;
+      updateGuides(3);
+      return;
+    }
+
+    if (condition === "healthy") {
+      setPlantVisual(plant.healthy, "healthy");
+      setWaterStatus("Just right! Your plant is flourishing! 🌸");
+      setWaterFeedback("Wonderful! You found the right watering level.");
+      harvestButton.disabled = false;
+      updateGuides(4);
+      return;
+    }
+
+    if (condition === "harvested") {
+      setPlantVisual(plant.fruit, "flourishing");
+      setWaterStatus("Success! You finished your planting activity!");
+      setWaterFeedback("Great gardening! Try another plant or start again.");
+      harvestButton.disabled = true;
+      updateGuides(4);
+    }
+  }
+
+  function resetGarden(showMessage = false) {
+    stopWatering();
+
+    planted = false;
+    waterLevel = 0;
+    lastConditionMessage = "";
+
+    plantedSeed.style.display = "inline";
+    plantedSeed.textContent = plantData[selectedPlant].seed;
+    $("soilCaption").textContent = "Tap here to plant!";
+    $("sceneLabel").textContent = `${plantData[selectedPlant].name}'s little garden`;
+
+    updateWaterMeter();
+    updatePlantCondition("seed");
+
+    if (showMessage) showToast("Your garden is ready for a fresh start! 🌱");
+  }
+
+  function choosePlant(key) {
+    if (!plantData[key]) return;
+
+    selectedPlant = key;
+
+    picker.querySelectorAll(".plant-choice").forEach(button => {
+      const selected = button.dataset.plant === key;
+      button.classList.toggle("selected", selected);
+      button.setAttribute("aria-pressed", String(selected));
+    });
+
+    resetGarden();
+  }
+
+  picker?.querySelectorAll(".plant-choice").forEach(button => {
+    button.setAttribute("aria-pressed", String(button.classList.contains("selected")));
+
+    button.addEventListener("click", () => {
+      choosePlant(button.dataset.plant);
+      showToast(`${plantData[button.dataset.plant].name} selected!`);
+    });
+  });
+
+  soilBed?.addEventListener("click", () => {
+    if (planted) {
+      showToast("Your seed is already planted. Now water it gently! 💧");
+      return;
+    }
+
+    planted = true;
+    waterLevel = 0;
+    plantedSeed.style.display = "none";
+    $("soilCaption").textContent = "Your seed is in the soil!";
+    $("sceneLabel").textContent = `${plantData[selectedPlant].name}'s little garden`;
+
+    updateWaterMeter();
+    updatePlantCondition("sprout");
+    showToast(`${plantData[selectedPlant].name} planted successfully! 🌱`);
+  });
+
+  // Water level is a teaching simulation, not a botanical measurement.
+  // 30–65 is the target green zone.
+  function evaluateWatering(finalLevel = waterLevel) {
+    if (!planted) return;
+
+    if (finalLevel < 30) {
+      updatePlantCondition("thirsty");
+      lastConditionMessage = "thirsty";
+    } else if (finalLevel <= 65) {
+      updatePlantCondition("healthy");
+      lastConditionMessage = "healthy";
+    } else {
+      updatePlantCondition("wilted");
+      lastConditionMessage = "wilted";
+    }
+  }
+
+  function waterTick() {
+    if (!isWatering || !planted) return;
+
+    waterLevel = Math.min(100, waterLevel + 2);
+    updateWaterMeter();
+
+    const now = performance.now();
+
+    if (now - lastWaterTime > 250) {
+      const splashes = $("waterSplashes");
+      splashes.classList.remove("show");
+      void splashes.offsetWidth;
+      splashes.classList.add("show");
+      lastWaterTime = now;
+    }
+
+    if (waterLevel < 30) {
+      setWaterStatus("Keep watering gently…");
+      setWaterFeedback("Not quite enough water yet. Continue toward the green zone.");
+    } else if (waterLevel <= 65) {
+      setWaterStatus("Looking good! You're in the green zone!");
+      setWaterFeedback("Release the watering can now for the best result! 🌱");
+    } else {
+      setWaterStatus("Careful! You're adding too much water!");
+      setWaterFeedback("Release the watering can before the meter reaches the end!");
+    }
+
+    if (waterLevel >= 100) {
+      stopWatering();
+      evaluateWatering();
+    }
+  }
+
+  function startWatering(event) {
+    if (event) event.preventDefault();
+
+    if (!planted) {
+      showToast("Tap the soil to plant your seed first! 🌱");
+      return;
+    }
+
+    if (plantCondition === "wilted" || plantCondition === "healthy" || plantCondition === "harvested") {
+      showToast("Start again if you want to practice watering once more.");
+      return;
+    }
+
+    if (isWatering) return;
+
+    isWatering = true;
+    waterStartLevel = waterLevel;
+    wateringCan.classList.add("is-watering");
+    wateringCan.setAttribute("aria-pressed", "true");
+
+    setWaterStatus("Watering…");
+    setWaterFeedback("Watch your meter carefully. Release the can to stop.");
+
+    waterTimer = setInterval(waterTick, 120);
+  }
+
+  function stopWatering() {
+    if (waterTimer) {
+      clearInterval(waterTimer);
+      waterTimer = null;
+    }
+
+    if (!isWatering) return;
+
+    isWatering = false;
+    wateringCan.classList.remove("is-watering");
+    wateringCan.setAttribute("aria-pressed", "false");
+
+    if (!planted) return;
+
+    // Always evaluate when the user releases the can, even if the
+    // level is too low. This lets the learner see the thirsty state.
+    evaluateWatering(waterLevel);
+
+    if (waterLevel >= 30 && waterLevel <= 65) {
+      showToast("Perfect watering! Your plant has bloomed! 🌸");
+    } else if (waterLevel < 30) {
+      showToast("Your plant needs a little more water. 💧");
+    } else {
+      showToast("Too much water! Your plant is wilting. 🥀");
+    }
+  }
+
+  wateringCan?.addEventListener("pointerdown", startWatering);
+  wateringCan?.addEventListener("pointerup", stopWatering);
+  wateringCan?.addEventListener("pointercancel", stopWatering);
+  wateringCan?.addEventListener("lostpointercapture", stopWatering);
+
+  // Also support users who hold the mouse button and release outside the can.
+  document.addEventListener("pointerup", stopWatering);
+  document.addEventListener("pointercancel", stopWatering);
+
+  wateringCan?.addEventListener("keydown", event => {
+    if (event.key === " " || event.key === "Enter") {
+      event.preventDefault();
+      startWatering(event);
+    }
+  });
+
+  wateringCan?.addEventListener("keyup", event => {
+    if (event.key === " " || event.key === "Enter") {
+      event.preventDefault();
+      stopWatering();
+    }
+  });
+
+  $("resetGarden")?.addEventListener("click", () => resetGarden(true));
+
+  harvestButton?.addEventListener("click", () => {
+    if (plantCondition !== "healthy") {
+      showToast("First, give your plant the right amount of water.");
+      return;
+    }
+
+    updatePlantCondition("harvested");
+    showToast("Amazing work, GrowQuest gardener! 🌻");
+
+    // Update the journey indicator to the final stage.
+    updateStage(4);
+  });
+
+  resetGarden();
+
+  // ----------------------------------------
+  // GROWING DIARY
+  // ----------------------------------------
+  const DIARY_KEY = "growquest_diary_v1";
+  const diaryForm = $("diaryForm");
+  const diaryList = $("diaryList");
+
+  function loadDiary() {
+    try {
+      const data = JSON.parse(localStorage.getItem(DIARY_KEY) || "[]");
+      return Array.isArray(data) ? data : [];
+    } catch {
+      return [];
+    }
+  }
+
+  let diaryEntries = loadDiary();
+
+  function saveDiary() {
+    try {
+      localStorage.setItem(DIARY_KEY, JSON.stringify(diaryEntries));
+      return true;
+    } catch (error) {
+      showToast("Unable to save. Your browser storage may be full or disabled.");
+      return false;
+    }
+  }
+
+  function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, character => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    })[character]);
+  }
+
+  function renderDiary() {
+    if (!diaryList) return;
+
+    if (diaryEntries.length === 0) {
+      diaryList.innerHTML = `
+        <div class="empty">
+          🌱 Your growing diary is waiting.<br>
+          Save your first observation to begin!
+        </div>`;
+      return;
+    }
+
+    diaryList.innerHTML = diaryEntries
+      .slice()
+      .sort((a, b) => b.createdAt - a.createdAt)
+      .map(entry => `
+        <article class="diary-entry">
+          <h3>${escapeHTML(entry.stage)}</h3>
+          <div class="diary-meta">
+            ${escapeHTML(entry.date)}
+            ${entry.height ? " · Height: " + escapeHTML(entry.height) : ""}
+          </div>
+          <p>${escapeHTML(entry.notes)}</p>
+        </article>
+      `).join("");
+  }
+
+  const today = new Date();
+  const localToday = [
+    today.getFullYear(),
+    String(today.getMonth() + 1).padStart(2, "0"),
+    String(today.getDate()).padStart(2, "0")
+  ].join("-");
+
+  if ($("entryDate") && !$("entryDate").value) {
+    $("entryDate").value = localToday;
+  }
+
+  diaryForm?.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const date = $("entryDate").value;
+    const stage = $("plantStage").value;
+    const height = $("plantHeight").value.trim();
+    const notes = $("entryNotes").value.trim();
+
+    if (!date || !notes) {
+      showToast("Please enter a date and your observation.");
+      return;
+    }
+
+    const entry = {
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      date,
+      stage,
+      height,
+      notes,
+      createdAt: Date.now()
+    };
+
+    diaryEntries.push(entry);
+
+    if (!saveDiary()) {
+      diaryEntries.pop();
+      return;
+    }
+
+    renderDiary();
+    $("entryNotes").value = "";
+    $("plantHeight").value = "";
+
+    showToast("Your diary entry has been saved! 📔");
+  });
+
+  $("exportDiary")?.addEventListener("click", () => {
+    if (diaryEntries.length === 0) {
+      showToast("Your diary is empty. Save an entry before exporting.");
+      return;
+    }
+
+    const content = [
+      "GROWQUEST — MY GROWING DIARY",
+      "================================",
+      "",
+      ...diaryEntries
+        .slice()
+        .sort((a, b) => a.date.localeCompare(b.date))
+        .flatMap((entry, index) => [
+          `Entry ${index + 1}`,
+          `Date: ${entry.date}`,
+          `Plant stage: ${entry.stage}`,
+          `Height: ${entry.height || "Not recorded"}`,
+          `Observation: ${entry.notes}`,
+          "--------------------------------",
+          ""
+        ])
+    ].join("\n");
+
+    const blob = new Blob(["\uFEFF" + content], {
+      type: "text/plain;charset=utf-8"
+    });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "GrowQuest-Growing-Diary.txt";
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    showToast("Your growing diary has been exported! 📄");
+  });
+
+  $("clearDiary")?.addEventListener("click", () => {
+    if (diaryEntries.length === 0) {
+      showToast("There are no diary entries to clear.");
+      return;
+    }
+
+    if (!confirm("Are you sure you want to clear all your diary entries? This cannot be undone.")) {
+      return;
+    }
+
+    const previousEntries = diaryEntries;
+    diaryEntries = [];
+
+    if (!saveDiary()) {
+      diaryEntries = previousEntries;
+      return;
+    }
+
+    renderDiary();
+    showToast("Your diary has been cleared.");
+  });
+
+  renderDiary();
+});
+</script>
+</body>
+</html>
